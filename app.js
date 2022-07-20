@@ -1,7 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
-            api_key: "",
+            api_key: "F6WJPL5LWHX5DJV8ZDZJR6NEC",
             url_base: "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/",
             query: '',
             weather: {},
@@ -29,11 +29,25 @@ const app = Vue.createApp({
         },
         getAverage (results) {
 
+            console.log(results)
+
             this.day1 = results.days[0].temp
             this.day2 = results.days[1].temp
             this.day3 = results.days[2].temp
             this.day4 = results.days[3].temp
             this.day5 = results.days[4].temp
+
+            this.high1 = results.days[0].tempmax
+            this.high2 = results.days[1].tempmax
+            this.high3 = results.days[2].tempmax
+            this.high4 = results.days[3].tempmax
+            this.high5 = results.days[4].tempmax
+
+            this.low1 = results.days[0].tempmin
+            this.low2 = results.days[1].tempmin
+            this.low3 = results.days[2].tempmin
+            this.low4 = results.days[3].tempmin
+            this.low5 = results.days[4].tempmin
 
             this.date1 = results.days[0].datetime
             this.date2 = results.days[2].datetime
@@ -43,43 +57,55 @@ const app = Vue.createApp({
 
             this.title = "Average 5-day Temp"
 
+            console.log(this.low4)
             this.makeChart()
         },
         makeChart() {
             let myChart = document.getElementById('myChart').getContext('2d');
-            let date = new Date()
-
-            let year = date.getFullYear()
-            //global options
 
             Chart.defaults.global.defaultFontFamily = 'Arial';
             Chart.defaults.global.defaultFontSize = 18;
             Chart.defaults.global.defaultFontColor = '#777';
 
-            let massPopChart = new Chart(myChart, {
+            let temperature = new Chart(myChart, {
                 type: 'bar', //bar, horizontalBar, pie, line, doughnut, radar, polarArea
                 data: {
                     labels: [this.date1, this.date1, this.date1, this.date1, this.date1],
-                    datasets: [{
-                         label: ['Average', 'low', 'high'],
-                        data: [
-                            this.day1,
-                            this.day2,
-                            this.day3,
-                            this.day4,
-                            this.day5
-                        ],
-                        //backgroundColor: 'green'
-                        backgroundColor: [ //can also use hex / rgba colors
-                            'red',
-                            'orange',
-                            'yellow'
-                        ],
-                        borderWidth: 1,
-                        borderColor: 'grey',
-                        hoverBorderWidth: 3,
-                        hoverBorderColor: 'black'
-                    }]
+                    datasets: [
+                        {
+                            label: "High",
+                            backgroundColor: "red",
+                            data: [
+                                this.high1,
+                                this.high2,
+                                this.high3,
+                                this.high4,
+                                this.high5
+                            ]
+                        },
+                        {
+                            label: "Average",
+                            backgroundColor: 'Yellow',
+                            data: [
+                                this.day1,
+                                this.day2,
+                                this.day3,
+                                this.day4,
+                                this.day5
+                            ]
+                        },
+                        {
+                            label: "Low",
+                            backgroundColor: 'blue',
+                            data: [
+                                this.low1,
+                                this.low2,
+                                this.low3,
+                                this.low4,
+                                this.low5
+                            ]
+                        }
+                    ]
                 },
                 options: {
                     title: {
